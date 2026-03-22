@@ -3,76 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Squid Game Invitation</title>
+    <title>Squid Game</title>
     <style>
         body {
+            background-color: #1a1a1a;
+            color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f9f9f9;
-            padding: 20px;
-        }
-        h1 {
-            color: #e74c3c;
         }
         .button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
+            padding: 10px 20px;
             font-size: 16px;
-            margin: 4px 2px;
+            border: none;
             cursor: pointer;
-            border-radius: 16px;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .yes-button {
+            background-color: blue;
+            color: white;
+        }
+        .no-button {
+            background-color: red;
+            color: white;
         }
         .disclaimer {
-            font-size: 12px;
             margin-top: 20px;
-            color: #555;
+            font-size: 14px;
+            color: gray;
         }
-        #countdown {
-            font-size: 24px;
-            color: #e74c3c;
-            margin-top: 20px;
+        .input-field {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Squid Game</h1>
-    <p>Please enter your name to join:</p>
-    <input type="text" id="nameInput" placeholder="Your Name"><br><br>
-    <button class="button" onclick="handleResponse('yes')">Yes</button>
-    <button class="button" onclick="handleResponse('no')">No</button>
-    <p class="disclaimer">Disclaimer: Participation is at your own risk. This is a fictional game.</p>
-    <div id="countdown"></div>
-
-    <script>
-        function handleResponse(response) {
-            const name = document.getElementById('nameInput').value;
-            if (response === 'yes') {
-                alert(`Welcome, ${name}! Prepare for the game!`);
-            } else {
-                alert(`Goodbye, ${name}. Stay safe!`);
-            }
-        }
-
-        // Countdown Timer
-        let countdownDate = new Date(Date.UTC(2026, 2, 22, 12, 30, 58)).getTime();
-        let countdownFunction = setInterval(function() {
-            let now = new Date().getTime();
-            let distance = countdownDate - now;
-            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById('countdown').innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                document.getElementById('countdown').innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
+    <h1>Welcome to Squid Game</h1>
+    <input type="text" class="input-field" placeholder="Enter your name" required>
+    <br>
+    <button class="button yes-button">YES</button>
+    <button class="button no-button">NO</button>
+    <p class="disclaimer">Participation in the game is voluntarily. By entering, players accept the rules and the conditions of the organisers. Players who fail to compete a challenge or break the rules will be eliminated from the game.</p>
 </body>
 </html>
