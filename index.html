@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Squid Game Invitation</title>
+<style>
+    body {
+        background-color: black;
+        color: #ff0040;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 10%;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 18px;
+        margin: 10px;
+        border: none;
+        text-align: center;
+    }
+
+    button {
+        font-size: 50px;
+        margin: 20px;
+        padding: 20px 40px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+    }
+
+    .circle {
+        background-color: red;
+        color: white;
+    }
+
+    .cross {
+        background-color: white;
+        color: black;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    #timer {
+        font-size: 40px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>You have been selected</h1>
+
+<div id="start">
+    <input type="text" id="name" placeholder="Enter player name">
+    <br>
+    <button onclick="startGame()">Continue</button>
+</div>
+
+<div id="vote" class="hidden">
+    <h2>Do you wish to participate?</h2>
+    <button class="circle" onclick="vote('O')">O</button>
+    <button class="cross" onclick="vote('X')">X</button>
+</div>
+
+<div id="result" class="hidden">
+    <h2 id="message"></h2>
+    <div id="timer"></div>
+</div>
+
+<script>
+let votes = JSON.parse(localStorage.getItem("votes")) || [];
+
+function startGame() {
+    const name = document.getElementById("name").value;
+    if (!name) {
+        alert("Please enter a name");
+        return;
+    }
+    localStorage.setItem("playerName", name);
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("vote").classList.remove("hidden");
+}
+
+function vote(choice) {
+    const name = localStorage.getItem("playerName");
+
+    votes.push({ name, choice });
+    localStorage.setItem("votes", JSON.stringify(votes));
+
+    document.getElementById("vote").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+
+    if (choice === "O") {
+        document.getElementById("message").innerText =
+            "You have chosen to participate.";
+
+        startCountdown();
+    } else {
+        document.getElementById("message").innerText =
+            "You have refused to participate.";
+
+        setTimeout(() => {
+            document.body.innerHTML = "<h1>You have been eliminated.</h1>";
+        }, 1500);
+    }
+}
+
+function startCountdown() {
+    const targetDate = new Date("March 27, 2026 00:00:00").getTime();
+
+    const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById("timer").innerText = "The game begins now.";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((distance / (1000 * 60)) % 60);
+        const seconds = Math.floor((distance / 1000) % 60);
+
+        document.getElementById("timer").innerText =
+            days + "D " + hours + "H " + minutes + "M " + seconds + "S";
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
