@@ -1,137 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Squid Game Invitation</title>
-<style>
-    body {
-        background-color: black;
-        color: #ff0040;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin-top: 10%;
-    }
-
-    input {
-        padding: 10px;
-        font-size: 18px;
-        margin: 10px;
-        border: none;
-        text-align: center;
-    }
-
-    button {
-        font-size: 50px;
-        margin: 20px;
-        padding: 20px 40px;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
-    }
-
-    .circle {
-        background-color: red;
-        color: white;
-    }
-
-    .cross {
-        background-color: white;
-        color: black;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    #timer {
-        font-size: 40px;
-        margin-top: 20px;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Game Invitation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        h1 {
+            color: #e74c3c;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 16px;
+        }
+        .disclaimer {
+            font-size: 12px;
+            margin-top: 20px;
+            color: #555;
+        }
+        #countdown {
+            font-size: 24px;
+            color: #e74c3c;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-
 <body>
+    <h1>Welcome to the Squid Game</h1>
+    <p>Please enter your name to join:</p>
+    <input type="text" id="nameInput" placeholder="Your Name"><br><br>
+    <button class="button" onclick="handleResponse('yes')">Yes</button>
+    <button class="button" onclick="handleResponse('no')">No</button>
+    <p class="disclaimer">Disclaimer: Participation is at your own risk. This is a fictional game.</p>
+    <div id="countdown"></div>
 
-<h1>You have been selected</h1>
-
-<div id="start">
-    <input type="text" id="name" placeholder="Enter player name">
-    <br>
-    <button onclick="startGame()">Continue</button>
-</div>
-
-<div id="vote" class="hidden">
-    <h2>Do you wish to participate?</h2>
-    <button class="circle" onclick="vote('O')">O</button>
-    <button class="cross" onclick="vote('X')">X</button>
-</div>
-
-<div id="result" class="hidden">
-    <h2 id="message"></h2>
-    <div id="timer"></div>
-</div>
-
-<script>
-let votes = JSON.parse(localStorage.getItem("votes")) || [];
-
-function startGame() {
-    const name = document.getElementById("name").value;
-    if (!name) {
-        alert("Please enter a name");
-        return;
-    }
-    localStorage.setItem("playerName", name);
-    document.getElementById("start").classList.add("hidden");
-    document.getElementById("vote").classList.remove("hidden");
-}
-
-function vote(choice) {
-    const name = localStorage.getItem("playerName");
-
-    votes.push({ name, choice });
-    localStorage.setItem("votes", JSON.stringify(votes));
-
-    document.getElementById("vote").classList.add("hidden");
-    document.getElementById("result").classList.remove("hidden");
-
-    if (choice === "O") {
-        document.getElementById("message").innerText =
-            "You have chosen to participate.";
-
-        startCountdown();
-    } else {
-        document.getElementById("message").innerText =
-            "You have refused to participate.";
-
-        setTimeout(() => {
-            document.body.innerHTML = "<h1>You have been eliminated.</h1>";
-        }, 1500);
-    }
-}
-
-function startCountdown() {
-    const targetDate = new Date("March 27, 2026 00:00:00").getTime();
-
-    const timerInterval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        if (distance <= 0) {
-            clearInterval(timerInterval);
-            document.getElementById("timer").innerText = "The game begins now.";
-            return;
+    <script>
+        function handleResponse(response) {
+            const name = document.getElementById('nameInput').value;
+            if (response === 'yes') {
+                alert(`Welcome, ${name}! Prepare for the game!`);
+            } else {
+                alert(`Goodbye, ${name}. Stay safe!`);
+            }
         }
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((distance / (1000 * 60)) % 60);
-        const seconds = Math.floor((distance / 1000) % 60);
-
-        document.getElementById("timer").innerText =
-            days + "D " + hours + "H " + minutes + "M " + seconds + "S";
-    }, 1000);
-}
-</script>
-
+        // Countdown Timer
+        let countdownDate = new Date(Date.UTC(2026, 2, 22, 12, 30, 58)).getTime();
+        let countdownFunction = setInterval(function() {
+            let now = new Date().getTime();
+            let distance = countdownDate - now;
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById('countdown').innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById('countdown').innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
